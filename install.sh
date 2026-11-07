@@ -8,4 +8,4 @@ if ! command -v stow >/dev/null 2>&1; then
   exit 127
 fi
 
-stow --dir="$repo_dir" --target="$HOME" vim zsh
+stow --restow --no-folding --dir="$repo_dir" --target="$HOME" git vim zsh

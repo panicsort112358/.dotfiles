@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Vim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# C++ / clangd local cache
+.clangd/
+compile_commands.json

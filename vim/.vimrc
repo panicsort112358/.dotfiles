@@ -1,5 +1,9 @@
 let mapleader = " "
 
+" Core behavior
+set hidden
+set backspace=indent,eol,start
+
 " Display
 set number
 set relativenumber
@@ -37,3 +41,15 @@ syntax enable
 " Command-line completion
 set wildmenu
 set wildmode=longest:full,full
+
+" Persistent undo, swap, and backup files in XDG state directory
+let s:state_dir = expand($XDG_STATE_HOME != '' ? $XDG_STATE_HOME : '~/.local/state') . '/vim'
+for s:dir in ['undo', 'swap', 'backup']
+  if !isdirectory(s:state_dir . '/' . s:dir)
+    call mkdir(s:state_dir . '/' . s:dir, 'p', 0700)
+  endif
+endfor
+let &undodir   = s:state_dir . '/undo//'
+let &directory = s:state_dir . '/swap//'
+let &backupdir = s:state_dir . '/backup//'
+set undofile

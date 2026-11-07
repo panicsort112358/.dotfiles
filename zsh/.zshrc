@@ -13,12 +13,37 @@ setopt INTERACTIVE_COMMENTS
 
 bindkey -e
 
-# Go tools installed with `go install` use $HOME/go/bin by default.
-export PATH="$HOME/go/bin:$PATH"
+export CLICOLOR=1
+
+# Deduplicate PATH entries across reloads.
+typeset -U path PATH
+path=(
+  "$HOME/.local/bin"
+  "$HOME/go/bin"
+  $path
+)
 
 autoload -Uz compinit
-compinit
+zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-$ZSH_VERSION"
+[[ -d "${zcompdump:h}" ]] || mkdir -p "${zcompdump:h}"
+compinit -d "$zcompdump"
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
+bindkey '^[OA' up-line-or-beginning-search
+bindkey '^[OB' down-line-or-beginning-search
 
 if [[ -r "$HOME/.config/zsh/aliases.zsh" ]]; then
   source "$HOME/.config/zsh/aliases.zsh"
+fi
+
+# Source machine-local overrides not tracked in git.
+if [[ -r "$HOME/.config/zsh/local.zsh" ]]; then
+  source "$HOME/.config/zsh/local.zsh"
 fi

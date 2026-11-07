@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# Vim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Machine-local zsh overrides
+zsh/.config/zsh/local.zsh
